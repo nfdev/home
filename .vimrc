@@ -11,7 +11,7 @@ set hlsearch
 
 " Edit
 set showmatch
-inoremap jj
+inoremap jj <ESC>
 cmap w!! w !sudo tee > /dev/null %
 
 " Backup
@@ -30,19 +30,62 @@ else
     call neobundle#begin(s:bundle_root)
     NeoBundleFetch 'Shougo/neobundle.vim'
 
-"    NeoBundleLazy 'Flake8-vim', 'davidhalter/jedi-vim',
-"        \ {"autoload": {"filetypes": ['py']}}
-"    NeoBundleLazy 'hynek/vim-python-pep8-indent',
-"        \ {"autoload": {"filetypes": ['py']}}
-"    NeoBundleLazy 'Townk/vim-autoclose', 'scrooloose/syntastic',
-"        \ {"autoload": {"filetypes": ['py']}}
-    NeoBundle 'Flake8-vim', 'davidhalter/jedi-vim'
-    NeoBundle 'hynek/vim-python-pep8-indent'
-    NeoBundle 'Townk/vim-autoclose', 'scrooloose/syntastic'
+    " --------------------------------
+    " Python
+    " --------------------------------
+    NeoBundleLazy 'hynek/vim-python-pep8-indent', {
+        \ "autoload" : { "filetypes" : "python" } }
+    NeoBundleLazy 'Flake8-vim', {
+        \ "autoload" : { "filetypes" : "python" } }
+    NeoBundleLazy 'davidhalter/jedi-vim', {
+        \ "autoload" : { "filetypes" : "python" } }
+
+    " --------------------------------
+    " Ruby 
+    " --------------------------------
+    NeoBundleLazy 'marcus/rsense', {
+        \ "autoload" : { "filetypes" : "ruby" } }
+    NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', {
+        \ "autoload" : { "filetypes" : "ruby" } }
+    NeoBundleLazy 'thinca/vim-ref', {
+        \ "autoload" : { "filetypes" : "ruby" } }
+    NeoBundleLazy 'taka84u9/vim-ref-ri', {
+        \ "autoload" : { "filetypes" : "ruby" } }
+    NeoBundleLazy 'szw/vim-tags', {
+        \ "autoload" : { "filetypes" : "ruby" } }
+
+
+    NeoBundle 'scrooloose/syntastic'
+
+    " --------------------------------
+    " Rsense
+    " --------------------------------
+    let g:rsenseHome = '/usr/local/lib/rsense-0.3'
+    let g:rsenseUseOmniFunc = 1
+
+    " --------------------------------
+    " neocomplete.vim
+    " --------------------------------
+    let g:acp_enableAtStartup = 0
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    if !exists('g:neocomplete#force_omni_input_patterns')
+      let g:neocomplete#force_omni_input_patterns = {}
+    endif
+    let g:neocomplete#force_omni_input_patterns.ruby = '[^.*\t]\.\w*\|\h\w*::'
+
+    " --------------------------------
+    " rubocop
+    " --------------------------------
+    let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
+    let g:syntastic_ruby_checkers = ['rubocop']
+
+    "--------------
+    " Others
+    "--------------
+    filetype plugin indent on
     NeoBundleCheck
     call neobundle#end()
-
-    filetype plugin indent on
 endif
 
 
